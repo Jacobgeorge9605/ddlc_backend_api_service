@@ -5,11 +5,12 @@ from app.core.config import get_settings
 
 def register_middleware(app: FastAPI) -> None:
     settings = get_settings()
+    wildcard_origins = settings.ALLOWED_ORIGINS == ["*"]
 
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.ALLOWED_ORIGINS,
-        allow_credentials=True,
+        allow_credentials=not wildcard_origins,
         allow_methods=["*"],
         allow_headers=["*"],
     )
